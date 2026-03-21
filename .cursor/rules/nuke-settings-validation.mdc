@@ -1,0 +1,39 @@
+---
+description: Nuke X 내부에서 프로그램 설정 값이 오류 없이 올바르게 반영되어야 한다는 규칙
+alwaysApply: true
+---
+
+# Nuke X 설정 값 반영 원칙
+
+프로그램에서 세팅한 결과 값은 **Nuke X 내부에서 오류 없이 제대로 반영**되어야 한다.
+
+## 핵심 원칙
+
+- 설정 값을 Nuke에 전달할 때 반드시 유효성 검사(validation)를 수행할 것
+- Nuke 노드 파라미터 설정 전후로 오류 여부를 확인할 것
+- 잘못된 값이 들어가면 조용히 실패하지 말고 명확한 오류 메시지를 출력할 것
+
+## 코드 패턴
+
+```python
+# ❌ BAD - 오류 확인 없이 바로 적용
+node['knob_name'].setValue(value)
+
+# ✅ GOOD - 유효성 검사 후 적용, 오류 시 명확하게 알림
+try:
+    node['knob_name'].setValue(value)
+    # 적용된 값이 실제로 반영되었는지 검증
+    applied = node['knob_name'].value()
+    if applied != value:
+        raise ValueError(f"값 불일치: 기대={value}, 실제={applied}")
+except Exception as e:
+    nuke.message(f"설정 적용 실패: {e}")
+    raise
+```
+
+## 체크리스트
+
+- [ ] Nuke 노드가 존재하는지 확인 후 값 설정
+- [ ] 설정 후 실제 적용 값 검증
+- [ ] 오류 발생 시 사용자에게 명확한 피드백 제공
+- [ ] Nuke 버전 호환성 고려

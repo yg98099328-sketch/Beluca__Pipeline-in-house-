@@ -1,0 +1,24 @@
+# PyInstaller
+build/
+release/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+*.so
+.venv/
+venv/
+.env/
+
+# OS / IDE
+Thumbs.db
+Desktop.ini
+*.swp
+.idea/
+
+# 로컬/테스트 (필요 시)
+*.zip
+presets.json
