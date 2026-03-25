@@ -42,37 +42,9 @@ else:
     # S3 PUT / multipart 시 URLError·일시 오류 재시도 (기본 3 → 넉넉히)
     Shotgun.MAX_ATTEMPTS = 20  # type: ignore[attr-defined]
 
-# S3/스토리지 PUT 전용 소켓 타임아웃(초). RPC용 config.timeout_secs(720)와 분리 — 과도한 대기 방지.
-try:
-    _BPE_PUT_TIMEOUT_SECS = float(os.environ.get("BPE_SG_PUT_TIMEOUT_SECS") or "120")
-    if _BPE_PUT_TIMEOUT_SECS <= 0:
-        _BPE_PUT_TIMEOUT_SECS = 120.0
-except (TypeError, ValueError):
-    _BPE_PUT_TIMEOUT_SECS = 120.0
-
-
-def _install_shotgun_upload_put_timeout_patch() -> None:
-    """
-    shotgun_api3.Shotgun._upload_data_to_storage 가 PUT 할 때 opener.open(request) 에
-    timeout 을 넘기지 않아, 느린 회선·대용량 청크에서 기본 소켓 타임아웃으로 끊길 수 있음.
-    RPC용 config.timeout_secs 와 별도로 BPE_SG_PUT_TIMEOUT_SECS(기본 120초)를 PUT 에 적용한다.
-    """
-    if Shotgun is None:
-        return
-    if getattr(Shotgun, "_bpe_put_timeout_patch", False):
-        return
-
-    _put_to = _BPE_PUT_TIMEOUT_SECS
-
-    def _make_upload_request(self, request, opener):
-        return opener.open(request, timeout=float(_put_to))
-
-    Shotgun._make_upload_request = _make_upload_request  # type: ignore[method-assign, assignment]
-    Shotgun._bpe_put_timeout_patch = True  # type: ignore[attr-defined]
-
-
-if Shotgun is not None:
-    _install_shotgun_upload_put_timeout_patch()
+## PUT timeout 패치 제거 — shotgun_api3 원본 동작 사용
+# 커서가 추가한 120초 timeout 패치가 대용량/느린 회선에서 타임아웃을 유발.
+# shotgun_api3 자체 config.timeout_secs(720초)와 내부 재시도로 충분.
 
 # ── 디버그 세션 9b9c60 (NDJSON) — Cursor_save + 워크스페이스 루트 둘 다 시도
 _DEBUG_9B9C60_LOG_PATHS = [
