@@ -1,0 +1,9 @@
+# BPE 개발 / EXE 빌드 시 build_exe.bat 가 주요 패키지를 설치합니다.
+# 로컬에서만 실행할 때: pip install -r requirements.txt
+
+customtkinter>=5.2.0
+Pillow>=10.0.0
+reportlab>=4.0.0
+shotgun_api3>=3.3.0
+tkinterdnd2>=0.3.0
+pyinstaller>=6.0.0

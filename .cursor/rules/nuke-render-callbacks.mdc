@@ -1,0 +1,77 @@
+---
+description: Nuke addBeforeRender/addAfterRender 콜백에서 UI·노드 조작 금지 — executeDeferred 사용 필수
+globs: src/nuke_setup_pro.py
+alwaysApply: false
+---
+
+# Nuke 렌더 콜백에서 UI·노드 조작 규칙
+
+`addBeforeRender` / `addAfterRender` 콜백은 `nuke.execute()` **실행 컨텍스트 내부**에서 호출된다.
+이 상태에서 UI 표시나 노드 생성·수정을 시도하면 **"I'm already executing something else"** 오류가 발생한다.
+
+## 금지 패턴 (콜백 내부에서 직접 호출 금지)
+
+```python
+# ❌ BAD — 렌더 콜백 안에서 직접 UI/노드 조작
+def bpe_qc_before_render():
+    panel.showModalDialog()          # → "already executing" 오류
+    nuke.nodes.Read(file=path)       # → "already executing" 오류 + ERROR 상태
+    existing["file"].setValue(path)  # → "already executing" 오류
+```
+
+## 올바른 패턴
+
+### BeforeRender: cancel + defer + re-render
+
+```python
+# ✅ GOOD
+_bpe_qc_approved: set = set()  # 재실행 렌더를 추적하는 전역 상태
+
+def bpe_qc_before_render():
+    write = nuke.thisNode()
+    write_name = write.name()
+
+    # 재실행 렌더는 즉시 통과
+    if write_name in _bpe_qc_approved:
+        _bpe_qc_approved.discard(write_name)
+        return
+
+    # 읽기 전용 데이터 수집 (콜백 안에서 안전)
+    qc_data = collect_qc_data(write)
+    first, last = int(write["first"].value()), int(write["last"].value())
+
+    def _deferred():
+        proceed = show_dialog(qc_data)   # idle 상태 → 안전
+        if proceed:
+            _bpe_qc_approved.add(write_name)
+            nuke.execute(nuke.toNode(write_name), first, last, 1)
+
+    nuke.executeDeferred(_deferred)      # Nuke idle 상태에서 실행 예약
+    raise RuntimeError("QC 확인 후 재시작")  # 현재 렌더 중단
+```
+
+### AfterRender: 데이터만 캡처 후 전부 defer
+
+```python
+# ✅ GOOD
+def bpe_post_render_load():
+    write = nuke.thisNode()
+    # 읽기 전용 데이터만 캡처
+    write_name = write.name()
+    out_file = _knob_value_safe(write, "file")
+    wx, wy = write.xpos(), write.ypos()
+
+    def _deferred(_wname=write_name, _out=out_file, _wx=wx, _wy=wy):
+        # 노드 생성·수정·Viewer 연결 전부 여기서 실행 (idle 상태 → 안전)
+        read = nuke.nodes.Read(file=_out, xpos=_wx + 160, ypos=_wy)
+        _bpe_connect_read_to_viewer(read)
+
+    nuke.executeDeferred(_deferred)
+```
+
+## 체크리스트
+
+- [ ] 콜백 안에서는 **읽기 전용** 조작(`value()`, `name()`, `xpos()`)만 수행
+- [ ] `showModalDialog()`, `nuke.nodes.*()`, `knob.setValue()` 는 반드시 `nuke.executeDeferred` 안으로 이전
+- [ ] BeforeRender 에서 다이얼로그가 필요하면 **cancel → defer → re-render** 패턴 사용
+- [ ] 재실행 렌더는 전역 approved set 으로 식별하여 무한 루프 방지

@@ -1,0 +1,54 @@
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_102_004_0060_comp_v005.mov", "patterns_tried": 4}, "timestamp": 1774351424150}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_102_004_0060_comp_v001.mov", "patterns_tried": 4}, "timestamp": 1774351431847}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "EP09_s06_c0030_comp_v002_log", "result": "EP09_s06_c0030"}, "timestamp": 1774351454137}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "EP09_s06_c0030", "shot_id": 2860027, "code": "EP09_s06_c0030"}, "timestamp": 1774351455340}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "EP09_s06_c0030_comp_v001_linear", "result": "EP09_s06_c0030"}, "timestamp": 1774351458603}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "EP09_s06_c0030", "shot_id": 2860027, "code": "EP09_s06_c0030"}, "timestamp": 1774351458891}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E104_S002_0010_comp_v008", "result": "E104_S002_0010"}, "timestamp": 1774351478336}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E104_S002_0010", "shot_id": 2860328, "code": "E104_S002_0010"}, "timestamp": 1774351478627}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E104_S002_0010_comp_v001", "result": "E104_S002_0010"}, "timestamp": 1774351498880}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E104_S002_0010", "shot_id": 2860328, "code": "E104_S002_0010"}, "timestamp": 1774351499164}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E104_S002_0010_comp_v006", "result": "E104_S002_0010"}, "timestamp": 1774351511345}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E104_S002_0010", "shot_id": 2860328, "code": "E104_S002_0010"}, "timestamp": 1774351511619}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E107_S012_0120_comp_v001", "result": "E107_S012_0120"}, "timestamp": 1774351640289}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E107_S012_0120", "shot_id": 2861306, "code": "E107_S012_0120"}, "timestamp": 1774351640574}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_101_029_0005_comp_v002.mov", "patterns_tried": 4}, "timestamp": 1774351700713}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_101_029_0005_comp_v003.mov", "patterns_tried": 4}, "timestamp": 1774351707567}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_101_029_0005_comp_v001.mov", "patterns_tried": 4}, "timestamp": 1774351719397}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "not_found", "data": {"name": "TLS_101_029_0005_comp_v003.mov", "patterns_tried": 4}, "timestamp": 1774351744783}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E106_S032_0220_comp_v004", "result": "E106_S032_0220"}, "timestamp": 1774351787505}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E106_S032_0220", "shot_id": 2860464, "code": "E106_S032_0220"}, "timestamp": 1774351787783}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E107_S012_0110_comp_v001", "result": "E107_S012_0110"}, "timestamp": 1774352013805}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:find_shot_any_project", "message": "found", "data": {"query": "E107_S012_0110", "shot_id": 2861305, "code": "E107_S012_0110"}, "timestamp": 1774352014096}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-A", "location": "shotgrid_client.py:upload_movie_to_version", "message": "pre_upload", "data": {"version_id": 127581, "basename": "E107_S012_0110_comp_v001.mov", "size_bytes": 138387942, "likely_network_drive": true}, "timestamp": 1774352055203}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-B", "location": "shotgrid_client.py:upload_movie_to_version", "message": "network_path_copied_to_temp", "data": {"temp_basename": "bpe_sg_upload_vfrccw75.mov", "size_bytes": 138387942}, "timestamp": 1774352055341}
+2026-03-24 20:34:16,730 DEBUG Completed rpc call to /upload/api_get_upload_link_info
+2026-03-24 20:34:18,105 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:18,907 DEBUG Completed request to PUT
+2026-03-24 20:34:18,907 DEBUG Part upload completed successfully.
+2026-03-24 20:34:20,264 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:20,884 DEBUG Completed request to PUT
+2026-03-24 20:34:20,884 DEBUG Part upload completed successfully.
+2026-03-24 20:34:22,238 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:22,996 DEBUG Completed request to PUT
+2026-03-24 20:34:22,996 DEBUG Part upload completed successfully.
+2026-03-24 20:34:24,040 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:24,671 DEBUG Completed request to PUT
+2026-03-24 20:34:24,671 DEBUG Part upload completed successfully.
+2026-03-24 20:34:26,000 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:26,651 DEBUG Completed request to PUT
+2026-03-24 20:34:26,651 DEBUG Part upload completed successfully.
+2026-03-24 20:34:28,036 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:28,666 DEBUG Completed request to PUT
+2026-03-24 20:34:28,666 DEBUG Part upload completed successfully.
+2026-03-24 20:34:29,692 DEBUG Got next upload link from server for multipart upload.
+2026-03-24 20:34:30,368 DEBUG Completed request to PUT
+2026-03-24 20:34:30,368 DEBUG Part upload completed successfully.
+2026-03-24 20:34:32,183 DEBUG File uploaded in multiple parts to Cloud storage: C:\Users\yklee\AppData\Local\Temp\bpe_sg_upload_vfrccw75.mov
+2026-03-24 20:34:34,389 DEBUG Attachment linked to content on Cloud storage
+{"sessionId": "876743", "runId": "post-fix", "hypothesisId": "H-C", "location": "shotgrid_client.py:upload_movie_to_version", "message": "upload_ok", "data": {"version_id": 127581}, "timestamp": 1774352074389}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "TLS_101_029_0005_comp_v003", "result": "TLS_101_029_0005"}, "timestamp": 1774352319496}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "EP09_s16_c0130_comp_v001_linear", "result": "EP09_s16_c0130"}, "timestamp": 1774352319497}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E104_S038_0100_comp_v001", "result": "E104_S038_0100"}, "timestamp": 1774352319522}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "E107_S022_0080", "result": "E107_S022_0080"}, "timestamp": 1774352319525}
+{"sessionId": "876743", "runId": "upload-fix", "hypothesisId": "H-PARSE", "location": "shotgrid_client.py:parse_shot_code_from_filename", "message": "found_in_stem", "data": {"stem": "TLS_101_029_0005_comp_v003", "result": "TLS_101_029_0005"}, "timestamp": 1774352319528}

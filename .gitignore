@@ -22,3 +22,6 @@ Desktop.ini
 # 로컬/테스트 (필요 시)
 *.zip
 presets.json
+
+# ShotGrid 사내 자격 (저장소에 올리지 말 것 — TD가 배포 시 복사)
+shotgrid_studio.json

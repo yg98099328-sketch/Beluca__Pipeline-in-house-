@@ -26,8 +26,19 @@ Nuke를 쓰려면 먼저 "연결"을 해줘야 해요.
 
 1. 이 폴더 안에서  install_to_nuke.bat  찾기
 2. 더블클릭해서 실행
+   ※ 기존에 .nuke\menu.py 가 있어도 덮어쓰지 않고, 맨 아래에 연동 코드만 추가합니다.
+   ※ install_setup_pro_menu.ps1 이 같은 폴더에 있어야 합니다 (배포 zip 전체 유지).
 3. Nuke를 완전히 끄고, 다시 켜기
 4. Nuke 맨 위 메뉴에  setup_pro  가 보이면 성공!
+
+■■ menu.py 수동 연동 (PowerShell 이 막힌 PC) ■■
+  .nuke\menu.py 파일 맨 아래에 아래 블록을 붙여 넣으면 됩니다:
+
+  try:
+      import nuke_setup_pro
+      nuke_setup_pro.add_setup_pro_menu()
+  except Exception:
+      pass
 
 
 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

@@ -102,6 +102,23 @@ Read {
  xpos -3041
  ypos 193
 }
+Read {
+ inputs 0
+ file_type exr
+ file W:/vfx/project_2026/SBS_030/04_sq/E107/E107_S022_0080/edit/E107_S022_0080_edit.%04d.exr
+ format "3840 2076 0 0 3840 2076 1 plate"
+ first 1001
+ last 1123
+ origfirst 1001
+ origlast 1123
+ origset true
+ colorspace "ACES - ACES2065-1"
+ name Read_Edit
+ label "Edit"
+ selected true
+ xpos -3430
+ ypos 193
+}
 Reformat {
  name Reformat1
  selected true

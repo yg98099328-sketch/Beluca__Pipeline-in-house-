@@ -1,0 +1,7 @@
+{
+  "base_url": "https://YOUR_STUDIO.shotgrid.autodesk.com",
+  "script_name": "YOUR_SCRIPT_NAME",
+  "script_key": "YOUR_SCRIPT_KEY",
+  "published_file_type": "Image Sequence",
+  "task_content": "comp"
+}

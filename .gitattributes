@@ -1,0 +1,2 @@
+# Windows batch: cmd.exe requires CRLF; LF-only breaks ^ line continuation and breaks build_exe.bat
+*.bat text eol=crlf
