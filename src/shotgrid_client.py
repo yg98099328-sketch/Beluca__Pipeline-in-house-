@@ -61,15 +61,11 @@ def _install_shotgun_upload_put_timeout_patch() -> None:
         return
     if getattr(Shotgun, "_bpe_put_timeout_patch", False):
         return
-    import urllib.error
 
     _put_to = _BPE_PUT_TIMEOUT_SECS
 
     def _make_upload_request(self, request, opener):
-        try:
-            return opener.open(request, timeout=float(_put_to))
-        except urllib.error.HTTPError:
-            raise
+        return opener.open(request, timeout=float(_put_to))
 
     Shotgun._make_upload_request = _make_upload_request  # type: ignore[method-assign, assignment]
     Shotgun._bpe_put_timeout_patch = True  # type: ignore[attr-defined]
@@ -1572,12 +1568,22 @@ def download_entity_thumbnail_to_path(
                 headers={"User-Agent": "BPE-Pipeline-Tool/1.0"},
             )
             with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+                content_type = (resp.headers.get("Content-Type") or "").lower()
                 data = resp.read()
-            if data:
-                dest.write_bytes(data)
-                return dest.is_file() and dest.stat().st_size > 0
-        except (urllib.error.URLError, OSError, ValueError):
-            pass
+            if not data:
+                return False
+            # HTML 에러 페이지가 이미지로 저장되는 것을 방지
+            if b"<!DOCTYPE" in data[:100] or b"<html" in data[:100]:
+                logger.debug("thumbnail response is HTML, not image: %s", url[:120])
+                return False
+            # Content-Type 이 이미지가 아닌 경우도 방지
+            if content_type and "image" not in content_type and "octet" not in content_type:
+                logger.debug("thumbnail content-type not image: %s", content_type)
+                return False
+            dest.write_bytes(data)
+            return dest.is_file() and dest.stat().st_size > 0
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            logger.debug("thumbnail fetch failed for %s: %s", url[:120], e)
         return False
 
     try:
@@ -1603,7 +1609,14 @@ def download_entity_thumbnail_to_path(
             if img.get("id"):
                 att = {"type": "Attachment", "id": int(img["id"])}
                 sg.download_attachment(att, str(dest))
-                return dest.is_file() and dest.stat().st_size > 0
+                if dest.is_file() and dest.stat().st_size > 0:
+                    # 다운로드된 파일이 이미지인지 간이 검증
+                    head = dest.read_bytes()[:100]
+                    if b"<!DOCTYPE" in head or b"<html" in head:
+                        logger.debug("download_attachment returned HTML, removing: %s", dest)
+                        dest.unlink(missing_ok=True)
+                        return False
+                    return True
     except Exception:
         pass
 

@@ -2728,7 +2728,8 @@ class SetupProManager(ctk.CTk):
             cimg = ctk.CTkImage(light_image=im, dark_image=im, size=(160, 90))
             label_widget.configure(image=cimg, text="")
             self._ms_thumb_refs.append(cimg)
-        except Exception:
+        except Exception as e:
+            logger.warning("썸네일 표시 실패 (%s): %s", path, e)
             try:
                 label_widget.configure(text="썸네일\n오류")
             except Exception:
