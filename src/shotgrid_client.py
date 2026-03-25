@@ -4,14 +4,11 @@ UI 스레드에서 직접 호출하지 말고 백그라운드 스레드에서 �
 """
 from __future__ import annotations
 
-import io
 import json
 import logging
-import mimetypes
 import os
 import re
 import shutil
-import stat
 import sys
 import tempfile
 import threading
@@ -40,7 +37,7 @@ except ImportError as _e:
 else:
     _SHOTGUN_IMPORT_ERROR = None
     # S3 PUT / multipart 시 URLError·일시 오류 재시도 (기본 3 → 넉넉히)
-    Shotgun.MAX_ATTEMPTS = 20  # type: ignore[attr-defined]
+    # MAX_ATTEMPTS 는 shotgun_api3 기본값(3) 유지 — 과도한 재시도는 프리즈를 유발
 
 ## PUT timeout 패치 제거 — shotgun_api3 원본 동작 사용
 # 커서가 추가한 120초 timeout 패치가 대용량/느린 회선에서 타임아웃을 유발.
@@ -84,91 +81,9 @@ def _debug_9b9c60_log(
     # #endregion
 
 
-# 업로드 진행률(바이트 기준) — progress_cb 가 없으면 Shotgun 원본 동작과 동일
-_bpe_upload_prog_tls = threading.local()
-_ORIG_SHOTGUN_UPLOAD_FILE_TO_STORAGE: Any = None
-_ORIG_SHOTGUN_MULTIPART_UPLOAD: Any = None
-
-
-def _install_bpe_shotgun_upload_progress_patches() -> None:
-    global _ORIG_SHOTGUN_UPLOAD_FILE_TO_STORAGE, _ORIG_SHOTGUN_MULTIPART_UPLOAD
-    if Shotgun is None:
-        return
-    if getattr(Shotgun, "_bpe_upload_progress_patched", False):
-        return
-    _ORIG_SHOTGUN_UPLOAD_FILE_TO_STORAGE = Shotgun._upload_file_to_storage
-    _ORIG_SHOTGUN_MULTIPART_UPLOAD = Shotgun._multipart_upload_file_to_storage
-
-    def _patched_upload_file_to_storage(self: Any, path: str, storage_url: str) -> None:
-        """
-        단일 PUT 업로드는 반드시 Shotgun 원본(실제 파일 객체)을 사용한다.
-        커스텀 read 래퍼는 urllib/httplib 조합에서 본문이 비거나 끊기는 사례가 있어
-        MOV가 Version에 안 붙는 문제를 유발할 수 있음(20MB 미만 단일 파트 경로).
-        진행률은 시작/완료 시점만 갱신한다.
-        """
-        frac_cb = getattr(_bpe_upload_prog_tls, "frac_cb", None)
-        if frac_cb is not None:
-            # #region agent log
-            _debug_9b9c60_log(
-                "FIX",
-                "shotgrid_client.py:_patched_upload_file_to_storage",
-                "single_put_using_shotgun_original",
-                {"basename": os.path.basename(path)},
-                run_id="post-fix",
-            )
-            # #endregion
-            try:
-                frac_cb(0.0)
-            except Exception:
-                pass
-        _ORIG_SHOTGUN_UPLOAD_FILE_TO_STORAGE(self, path, storage_url)
-        if frac_cb is not None:
-            try:
-                frac_cb(1.0)
-            except Exception:
-                pass
-
-    def _patched_multipart_upload_file_to_storage(
-        self: Any, path: str, upload_info: Dict[str, Any]
-    ) -> None:
-        frac_cb = getattr(_bpe_upload_prog_tls, "frac_cb", None)
-        if frac_cb is None:
-            return _ORIG_SHOTGUN_MULTIPART_UPLOAD(self, path, upload_info)
-        fd = open(path, "rb")
-        try:
-            content_type = mimetypes.guess_type(path)[0] or "application/octet-stream"
-            file_size = int(os.fstat(fd.fileno())[stat.ST_SIZE])
-            filename = os.path.basename(path)
-            etags: List[str] = []
-            part_number = 1
-            bytes_read = 0
-            chunk_size = int(self._MULTIPART_UPLOAD_CHUNK_SIZE)
-            while bytes_read < file_size:
-                data = fd.read(chunk_size)
-                data_size = len(data)
-                stream = io.BytesIO(data)
-                bytes_read += data_size
-                part_url = self._get_upload_part_link(upload_info, filename, part_number)
-                etags.append(
-                    self._upload_data_to_storage(stream, content_type, data_size, part_url)
-                )
-                part_number += 1
-                if frac_cb and file_size > 0:
-                    try:
-                        frac_cb(min(1.0, bytes_read / float(file_size)))
-                    except Exception:
-                        pass
-            self._complete_multipart_upload(upload_info, filename, etags)
-        finally:
-            fd.close()
-
-    Shotgun._upload_file_to_storage = _patched_upload_file_to_storage  # type: ignore[method-assign, assignment]
-    Shotgun._multipart_upload_file_to_storage = _patched_multipart_upload_file_to_storage  # type: ignore[method-assign, assignment]
-    Shotgun._bpe_upload_progress_patched = True  # type: ignore[attr-defined]
-
-
-if Shotgun is not None:
-    _install_bpe_shotgun_upload_progress_patches()
+## 업로드 진행률 몽키패치 제거 — shotgun_api3 원본 동작 사용
+# _upload_file_to_storage / _multipart_upload_file_to_storage 패치가
+# MOV가 Version에 안 붙는 문제를 유발. shotgun_api3 원본 메서드를 건드리지 않는다.
 
 
 class ShotGridError(Exception):
