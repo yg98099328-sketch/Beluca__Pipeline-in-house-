@@ -293,8 +293,16 @@ def connect_from_settings(
         sudo_as_login=sudo_login,
     )
     # RPC + S3 멀티파트 청크 PUT 각각에 긴 타임아웃 (패치로 PUT 에도 적용)
+    # BPE_SG_PUT_TIMEOUT_SECS 환경변수로 오버라이드 가능
+    _put_timeout_env = (os.environ.get("BPE_SG_PUT_TIMEOUT_SECS") or "").strip()
+    _put_timeout = 720.0
+    if _put_timeout_env:
+        try:
+            _put_timeout = max(60.0, float(_put_timeout_env))
+        except (ValueError, TypeError):
+            pass
     try:
-        sg.config.timeout_secs = 720.0
+        sg.config.timeout_secs = _put_timeout
     except Exception:
         pass
     return sg
@@ -892,8 +900,9 @@ def upload_movie_to_version(
             run_id="post-fix",
         )
         # #endregion
-        # sg.upload 내부(_upload_data_to_storage 등)에 이미 재시도가 있으므로 외부 중첩 재시도는 하지 않음.
-        upload_rounds = 1
+        # sg.upload 내부에도 재시도가 있지만, S3 타임아웃/연결 리셋 등
+        # 내부 MAX_ATTEMPTS 소진 후에도 외부에서 한 번 더 시도할 여지를 둔다.
+        upload_rounds = 3
         _overall(0.55)
         for attempt_idx in range(1, upload_rounds + 1):
             try:
@@ -919,9 +928,11 @@ def upload_movie_to_version(
                 break
             except Exception as round_e:
                 msg = str(round_e)
+                _msg_lower = msg.lower()
                 retryable = (
-                    "timed out" in msg.lower()
-                    or "timeout" in msg.lower()
+                    "timed out" in _msg_lower
+                    or "timeout" in _msg_lower
+                    or "max attempts" in _msg_lower
                     or "Connection reset" in msg
                     or "Connection aborted" in msg
                     or "URLError" in type(round_e).__name__
@@ -951,7 +962,9 @@ def upload_movie_to_version(
                 )
                 if not retryable or attempt_idx >= upload_rounds:
                     raise
-                time.sleep(min(30.0, 5.0 * attempt_idx))
+                _wait = min(60.0, 10.0 * attempt_idx)
+                logger.info("업로드 재시도 대기 %.0f초 (%d/%d)", _wait, attempt_idx, upload_rounds)
+                time.sleep(_wait)
         _overall(0.92)
         # #region agent log
         vf: Optional[Dict[str, Any]] = None
