@@ -2,7 +2,7 @@
 from PyInstaller.utils.hooks import collect_data_files
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\setup_pro_common.py', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\shotgrid_client.py', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\nuke_setup_pro.py', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\menu.py', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\shot_node_template.nk', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\scripts\\install_to_nuke.bat', '.'), ('C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\VERSION.txt', '.')]
+datas = [('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\setup_pro_common.py', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\shotgrid_client.py', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\nuke_setup_pro.py', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\menu.py', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\shot_node_template.nk', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\scripts\\install_to_nuke.bat', '.'), ('C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\VERSION.txt', '.')]
 binaries = []
 hiddenimports = ['customtkinter', 'shotgun_api3', 'shotgun_api3.lib.httplib2', 'shotgun_api3.lib.sgtimezone', 'certifi', 'six', 'urllib3', 'tkinterdnd2']
 datas += collect_data_files('customtkinter')
@@ -11,7 +11,7 @@ datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 
 a = Analysis(
-    ['C:\\Users\\yklee\\Desktop\\BPE _ SAVE\\BPE_0325\\Cursor_save\\src\\setup_pro_manager.py'],
+    ['C:\\Users\\yklee\\Desktop\\git hub\\Beluca__Pipeline-in-house-\\src\\setup_pro_manager.py'],
     pathex=[],
     binaries=binaries,
     datas=datas,
